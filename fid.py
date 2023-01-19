@@ -1,3 +1,7 @@
+"""
+The Frechet Distance calculation functions utilized in this analysis were sourced from a publicly available repository
+https://github.com/Simon4Yan/Meta-set
+"""
 import os
 import sys
 
