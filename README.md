@@ -52,21 +52,21 @@ The CIFAR-10.1 dataset is a single dataset. In contrast, CIFAR-10-C and CIFAR-10
 
 | Method    | CIFAR-10.1 |  CIFAR-10.1-C | CIFAR-10-F  |  Overall   |
 | --------  | ---- | ---- | ---- | ------ |
-| Rotation  | 7.285  | 6.386  | 5.159  | 5.831  |
-| ConfScore | 2.190  | 9.743  | 4.852  | 7.549  |
-| Entropy   | 2.424  | 10.300 | 4.340  | 7.743  |
-| ATC       | 11.428 | 5.964  | 4.112  | 5.350  |
-| FID       | 7.517  | 5.145  | 3.930  | 4.659  |
+| Rotation  | 7.285  | 6.386  | 7.763  | 7.129  |
+| ConfScore | 2.190  | 9.743  | 2.676  | 6.985  |
+| Entropy   | 2.424  | 10.300 | 2.913  | 7.402  |
+| ATC       | 11.428 | 5.964  | 8.960  | 7.766  |
+| FID       | 7.517  | 5.145  | 4.662  | 4.985  |
 
 ### RepVGG (from [public repository](https://github.com/chenyaofo/pytorch-cifar-models))
 
 | Method    | CIFAR-10.1 |  CIFAR-10.1-C | CIFAR-10-F  |  Overall   |
 | --------  | ---- | ---- | ---- | ------ |
-| Rotation  | 16.726 | 17.137 | 8.272 | 13.442 |
-| ConfScore | 5.470  | 12.004 | 3.320 | 8.643  |
-| Entropy   | 5.997  | 12.645 | 3.630 | 9.134  |
-| ATC       | 15.168 | 8.050  | 8.256 | 8.403  |
-| FID       | 10.718 | 6.318  | 5.886 | 6.257  |
+| Rotation  | 16.726 | 17.137 | 8.105 | 13.391 |
+| ConfScore | 5.470  | 12.004 | 3.709 | 8.722  |
+| Entropy   | 5.997  | 12.645 | 3.419 | 9.093  |
+| ATC       | 15.168 | 8.050  | 7.694 | 8.132  |
+| FID       | 10.718 | 6.318  | 5.245 | 5.966  |
 
 ## Code execution
 The above results can be replicated by executing the code provided below in the terminal.
