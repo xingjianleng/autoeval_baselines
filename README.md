@@ -41,12 +41,21 @@ where $\mu\_{ori}$ and $\mu$ are the mean feature vectors of $\mathcal{D}\_{ori}
 
 The Frechet Distance calculation functions utilized in this analysis were sourced from a [publicly available repository](https://github.com/Simon4Yan/Meta-set).
 
+## Dataset
+The training dataset consists of 1,000 transformed datasets from the original [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) test set, using the transformation strategy proposed by [Deng et al. (2021)](https://arxiv.org/abs/2007.02915). The validation set was composed of [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1), [CIFAR-10.1-C](https://github.com/hendrycks/robustness) (add corruptions [(Hendrycks et al., 2019)](https://arxiv.org/abs/1903.12261) to [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1) dataset), and CIFAR-10-F (real-world images collected from [Flickr](https://www.flickr.com))
+
+The CIFAR-10.1 dataset is a single dataset. In contrast, CIFAR-10.1-C and CIFAR-10-F contain 19 and 20 datasets, respectively. Therefore, the total number of datasets in the validation set is 40.
+
+The training datasets share a common label file named `labels.npy`, and images files are named `new_data_xxx.npy`, where `xxx` is a number from 000 to 999. For every dataset in the validation set, the image file and their labels are stored as two separate `Numpy` array files named "data.npy" and "labels.npy". The `PyTorch` implementation of the `Dataset` class for loading the data can be found in `utils.py`.
+
+Download the training datasets: [link](https://anu365-my.sharepoint.com/personal/u7136359_anu_edu_au/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fu7136359%5Fanu%5Fedu%5Fau%2FDocuments%2Ftrain%5Fdata%2Ezip&parent=%2Fpersonal%2Fu7136359%5Fanu%5Fedu%5Fau%2FDocuments&ga=1)
+
+Download the validation datasets: [link](https://anu365-my.sharepoint.com/:u:/g/personal/u7136359_anu_edu_au/Edg83yRxM9BPonPP22suB_IBrHlKYV5bOn4VK-c5RZ8dtQ?e=kExXEm)
+
 ## Results
 The necessary Python dependencies are specified in the `requirements.txt` file and the experiments were executed using Python version 3.10.8.
 
-The table presented below displays the results of the foundational measurements using [root-mean-square error](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSE). The experiment was conducted utilizing a single Geforce RTX 2080 Ti GPU, with a training dataset comprised of an augmented 1,000 [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) test set. The validation set was composed of [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1), [CIFAR-10.1-C](https://github.com/hendrycks/robustness) (add corruptions to [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1) dataset), and CIFAR-10-F (real-world images collected from [Flickr](https://www.flickr.com)).
-
-The CIFAR-10.1 dataset is a single dataset. In contrast, CIFAR-10-C and CIFAR-10-F each contain 20 datasets. Therefore, the total number of datasets is 40.
+The table presented below displays the results of the foundational measurements using [root-mean-square error](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSE). The experiment was conducted utilizing a single Geforce RTX 2080 Ti GPU.
 
 ### ResNet-56 (from [public repository](https://github.com/chenyaofo/pytorch-cifar-models))
 
