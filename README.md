@@ -52,7 +52,7 @@ Download the training datasets: [link](https://anu365-my.sharepoint.com/personal
 
 Download the validation datasets: [link](https://anu365-my.sharepoint.com/:u:/g/personal/u7136359_anu_edu_au/Edg83yRxM9BPonPP22suB_IBrHlKYV5bOn4VK-c5RZ8dtQ?e=kExXEm)
 
-**NOTE: To access the test datasets and participate in the competition, please fill in the [Datasets Request Form](https://anu365-my.sharepoint.com/:b:/g/personal/u7136359_anu_edu_au/ERz4ANQ1A31PvJKgd3mNxr8B1F4e0zfaZL3P_NLOvKrivg?e=lG7mkL) and send the signed form to VDU2023@gmail.com. Failing to provide the form will lead to the revocation of the CodaLab account in the competition.**
+**NOTE: To access the test datasets and participate in the competition, please fill in the [Datasets Request Form](https://anu365-my.sharepoint.com/:b:/g/personal/u7136359_anu_edu_au/ERz4ANQ1A31PvJKgd3mNxr8B1F4e0zfaZL3P_NLOvKrivg?e=lG7mkL) and send the signed form to datacvchallenge2023@gmail.com. Failing to provide the form will lead to the revocation of the CodaLab account in the competition.**
 
 ## Models
 In this competition, the models being evaluated are ResNet-56 and RepVGG-A0. Both implementations can be accessed in the public repository at https://github.com/chenyaofo/pytorch-cifar-models. To utilize the models and load their pretrained weights, use the code provided.
