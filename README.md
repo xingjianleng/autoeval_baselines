@@ -52,12 +52,21 @@ Download the training datasets: [link](https://anu365-my.sharepoint.com/personal
 
 Download the validation datasets: [link](https://anu365-my.sharepoint.com/:u:/g/personal/u7136359_anu_edu_au/Edg83yRxM9BPonPP22suB_IBrHlKYV5bOn4VK-c5RZ8dtQ?e=kExXEm)
 
+## Models
+In this competition, the models being evaluated are ResNet-56 and RepVGG-A0. Both implementations can be accessed in the public repository at https://github.com/chenyaofo/pytorch-cifar-models. To utilize the models and load their pretrained weights, use the code provided.
+```python
+import torch
+
+model = torch.hub.load("chenyaofo/pytorch-cifar-models", "cifar10_resnet56"， pretrained=True)
+model = torch.hub.load("chenyaofo/pytorch-cifar-models", "cifar10_repvgg_a0", pretrained=True)
+```
+
 ## Results
 The necessary Python dependencies are specified in the `requirements.txt` file and the experiments were executed using Python version 3.10.8.
 
 The table presented below displays the results of the foundational measurements using [root-mean-square error](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSE). The experiment was conducted utilizing a single Geforce RTX 2080 Ti GPU.
 
-### ResNet-56 (from [public repository](https://github.com/chenyaofo/pytorch-cifar-models))
+### ResNet-56
 
 | Method    | CIFAR-10.1 |  CIFAR-10.1-C | CIFAR-10-F  |  Overall   |
 | --------  | ---- | ---- | ---- | ------ |
@@ -67,7 +76,7 @@ The table presented below displays the results of the foundational measurements 
 | ATC       | 11.428 | 5.964  | 8.960  | 7.766  |
 | FID       | 7.517  | 5.145  | 4.662  | 4.985  |
 
-### RepVGG (from [public repository](https://github.com/chenyaofo/pytorch-cifar-models))
+### RepVGG
 
 | Method    | CIFAR-10.1 |  CIFAR-10.1-C | CIFAR-10-F  |  Overall   |
 | --------  | ---- | ---- | ---- | ------ |
