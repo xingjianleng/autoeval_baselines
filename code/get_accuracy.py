@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.append(".")
 
 import numpy as np
 import torch
@@ -22,10 +23,10 @@ def calculate_acc(dataloader, model, device):
 if __name__ == "__main__":
     # paths
     dataset_path = "/data/lengx/cifar/"
-    train_set = "cifar10-test-transformed"
+    train_set = "train_data"
     val_sets = sorted(["cifar10-f-32", "cifar-10.1-c", "cifar-10.1"])
     model_name = sys.argv[1]
-    temp_file_path = f"temp/{model_name}/acc/"
+    temp_file_path = f"../temp/{model_name}/acc/"
 
     batch_size = 500
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -69,6 +70,7 @@ if __name__ == "__main__":
             )
             accuracies[i] = calculate_acc(dataloader, model, device)
 
+        accuracies = np.round(accuracies, decimals=6)
         np.save(f"{temp_file_path}{train_set}.npy", accuracies)
 
     if not os.path.exists(f"{temp_file_path}val_sets.npy"):
@@ -97,4 +99,5 @@ if __name__ == "__main__":
             )
             accuracies[i] = calculate_acc(dataloader, model, device)
 
+        accuracies = np.round(accuracies, decimals=6)
         np.save(f"{temp_file_path}val_sets.npy", accuracies)

@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.append(".")
 
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -70,10 +71,10 @@ def rotation_pred(dataloader, model, device):
 if __name__ == "__main__":
     # paths
     dataset_path = "/data/lengx/cifar/"
-    train_set = "cifar10-test-transformed"
+    train_set = "train_data"
     val_sets = sorted(["cifar10-f-32", "cifar-10.1-c", "cifar-10.1"])
     model_name = sys.argv[1]
-    temp_file_path = f"temp/{model_name}/rotation/"
+    temp_file_path = f"../temp/{model_name}/rotation/"
 
     batch_size = 500
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -82,13 +83,13 @@ if __name__ == "__main__":
         model = ResNetRotation()
         model_state = model.state_dict()
         fc_rot_weights = torch.load(
-            "model_weights/resnet-rotation-fc.pt", map_location=torch.device("cpu")
+            "../model_weights/resnet-rotation-fc.pt", map_location=torch.device("cpu")
         )
     elif model_name == "repvgg":
         model = RepVGGRotation()
         model_state = model.state_dict()
         fc_rot_weights = torch.load(
-            "model_weights/repvgg-rotation-fc.pt", map_location=torch.device("cpu")
+            "../model_weights/repvgg-rotation-fc.pt", map_location=torch.device("cpu")
         )
     else:
         raise ValueError("Unexpected model_name")
@@ -163,12 +164,13 @@ if __name__ == "__main__":
     # calculate the linear regression model (accuracy in %)
     print(f"===> Linear Regression model for rotation accuracy method with model: {model_name}")
     train_x = np.load(f"{temp_file_path}{train_set}.npy") * 100
-    train_y = np.load(f"temp/{model_name}/acc/{train_set}.npy") * 100
+    train_y = np.load(f"../temp/{model_name}/acc/{train_set}.npy") * 100
     val_x = np.load(f"{temp_file_path}val_sets.npy") * 100
-    val_y = np.load(f"temp/{model_name}/acc/val_sets.npy") * 100
+    val_y = np.load(f"../temp/{model_name}/acc/val_sets.npy") * 100
 
     lr = LinearRegression()
     lr.fit(train_x.reshape(-1, 1), train_y)
-    val_y_hat = lr.predict(val_x.reshape(-1, 1))
+    # predictions will have 6 decimals
+    val_y_hat = np.round(lr.predict(val_x.reshape(-1, 1)), decimals=6)
     rmse_loss = mean_squared_error(y_true=val_y, y_pred=val_y_hat, squared=False)
     print(f"The RMSE on validation set is: {rmse_loss}")

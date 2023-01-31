@@ -4,6 +4,7 @@ https://github.com/Simon4Yan/Meta-set
 """
 import os
 import sys
+sys.path.append(".")
 
 import numpy as np
 from scipy import linalg
@@ -82,10 +83,10 @@ def calculate_frechet_distance(mu1, sigma1, mu2, sigma2, eps=1e-6):
 if __name__ == "__main__":
     # paths
     dataset_path = "/data/lengx/cifar/"
-    train_set = "cifar10-test-transformed"
+    train_set = "train_data"
     val_sets = sorted(["cifar10-f-32", "cifar-10.1-c", "cifar-10.1"])
     model_name = sys.argv[1]
-    temp_file_path = f"temp/{model_name}/fid/"
+    temp_file_path = f"../temp/{model_name}/fid/"
 
     batch_size = 500
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -178,16 +179,17 @@ if __name__ == "__main__":
 
         np.save(f"{temp_file_path}val_sets.npy", fids)
     
-    # if the calculation of rotation accuracy is finished
+    # if the calculation of FID is finished
     # calculate the linear regression model (accuracy in %)
     print(f"===> Linear Regression model for FID method with model: {model_name}")
     train_x = np.load(f"{temp_file_path}{train_set}.npy")
-    train_y = np.load(f"temp/{model_name}/acc/{train_set}.npy") * 100
+    train_y = np.load(f"../temp/{model_name}/acc/{train_set}.npy") * 100
     val_x = np.load(f"{temp_file_path}val_sets.npy")
-    val_y = np.load(f"temp/{model_name}/acc/val_sets.npy") * 100
+    val_y = np.load(f"../temp/{model_name}/acc/val_sets.npy") * 100
 
     lr = LinearRegression()
     lr.fit(train_x.reshape(-1, 1), train_y)
-    val_y_hat = lr.predict(val_x.reshape(-1, 1))
+    # predictions will have 6 decimals
+    val_y_hat = np.round(lr.predict(val_x.reshape(-1, 1)), decimals=6)
     rmse_loss = mean_squared_error(y_true=val_y, y_pred=val_y_hat, squared=False)
     print(f"The RMSE on validation set is: {rmse_loss}")

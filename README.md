@@ -48,11 +48,11 @@ The CIFAR-10.1 dataset is a single dataset. In contrast, CIFAR-10.1-C and CIFAR-
 
 The training datasets share a common label file named `labels.npy`, and images files are named `new_data_xxx.npy`, where `xxx` is a number from 000 to 999. For every dataset in the validation set, the image file and their labels are stored as two separate `Numpy` array files named "data.npy" and "labels.npy". The `PyTorch` implementation of the `Dataset` class for loading the data can be found in `utils.py`.
 
-Download the training datasets: [link](https://anu365-my.sharepoint.com/personal/u7136359_anu_edu_au/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fu7136359%5Fanu%5Fedu%5Fau%2FDocuments%2Ftrain%5Fdata%2Ezip&parent=%2Fpersonal%2Fu7136359%5Fanu%5Fedu%5Fau%2FDocuments&ga=1)
+Download the training datasets: [link](https://anu365-my.sharepoint.com/:u:/g/personal/u7136359_anu_edu_au/Eb9yO_Qg41lOkoRS7P6gmqMBk5Q6A2gCV8YbRbuLpB8NwQ?e=WO3Gqi)
 
 Download the validation datasets: [link](https://anu365-my.sharepoint.com/:u:/g/personal/u7136359_anu_edu_au/Edg83yRxM9BPonPP22suB_IBrHlKYV5bOn4VK-c5RZ8dtQ?e=kExXEm)
 
-**NOTE: To access the test datasets and participate in the competition, please fill in the [Datasets Request Form](https://anu365-my.sharepoint.com/:b:/g/personal/u7136359_anu_edu_au/ERz4ANQ1A31PvJKgd3mNxr8B1F4e0zfaZL3P_NLOvKrivg?e=lG7mkL) and send the signed form to datacvchallenge2023@gmail.com. Failing to provide the form will lead to the revocation of the CodaLab account in the competition.**
+**NOTE: To access the test datasets and participate in the competition, please fill in the [Datasets Request Form](https://anu365-my.sharepoint.com/:b:/g/personal/u7136359_anu_edu_au/ERz4ANQ1A31PvJKgd3mNxr8B1F4e0zfaZL3P_NLOvKrivg?e=lG7mkL) and send the signed form to [the competition organiser](mailto:datacvchallenge2023@gmail.com;VDU2023@gmail.com). Failing to provide the form will lead to the revocation of the CodaLab account in the competition.**
 
 ## Models
 In this competition, the models being evaluated are ResNet-56 and RepVGG-A0. Both implementations can be accessed in the public repository at https://github.com/chenyaofo/pytorch-cifar-models. To utilize the models and load their pretrained weights, use the code provided.
@@ -63,10 +63,19 @@ model = torch.hub.load("chenyaofo/pytorch-cifar-models", "cifar10_resnet56"， p
 model = torch.hub.load("chenyaofo/pytorch-cifar-models", "cifar10_repvgg_a0", pretrained=True)
 ```
 
+## Competition submission demo
+As we use automated evaluation scripts for submissions, the format of submitted files is very important. So, there is a function to store the accuracy predictions into the required format, named `store_ans` in `code/utils.py` and `demo/get_answer_txt.py`.
+
+Read the `demo/get_answer_txt.py` file to comprehend the function usage. Execute the code below to see the results.
+
+```bash
+python3 demo/get_answer_txt.py
+```
+
 ## Results
 The necessary Python dependencies are specified in the `requirements.txt` file and the experiments were executed using Python version 3.10.8.
 
-The table presented below displays the results of the foundational measurements using [root-mean-square error](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSE). The experiment was conducted utilizing a single Geforce RTX 2080 Ti GPU.
+The table presented below displays the results of the foundational measurements using [root-mean-square error](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSE). Accuracies are converted into percentages prior to calculation. The experiment was conducted with a single Geforce RTX 2080 Ti GPU.
 
 ### ResNet-56
 
@@ -78,7 +87,7 @@ The table presented below displays the results of the foundational measurements 
 | ATC       | 11.428 | 5.964  | 8.960  | 7.766  |
 | FID       | 7.517  | 5.145  | 4.662  | 4.985  |
 
-### RepVGG
+### RepVGG-A0
 
 | Method    | CIFAR-10.1 |  CIFAR-10.1-C | CIFAR-10-F  |  Overall   |
 | --------  | ---- | ---- | ---- | ------ |
@@ -89,8 +98,19 @@ The table presented below displays the results of the foundational measurements 
 | FID       | 10.718 | 6.318  | 5.245 | 5.966  |
 
 ## Code execution
-The above results can be replicated by executing the code provided below in the terminal.
+To install required `Python` libraries, execute the code below.
 ```bash
 pip3 install -r requirements.txt
-chmod u+x run.sh && ./run.sh
+```
+The above results can be replicated by executing the code provided below in the terminal.
+```bash
+cd code/
+python3 get_accuracy.py
+chmod u+x run_baselines.sh && ./run_baselines.sh
+```
+To run one specific baseline, use the code below.
+```bash
+cd code/
+python3 get_accuracy.py
+python3 baselines/BASELINE.py
 ```

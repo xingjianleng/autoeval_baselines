@@ -41,3 +41,11 @@ def predict_multiple(model, imgs):
         prob = model(imgs)
         pred = prob.argmax(dim=1, keepdim=True)
     return pred, torch.nn.functional.softmax(prob, dim=1).cpu().numpy()
+
+
+def store_ans(answers, file_name="answer.txt"):
+    # This function ensures that the format of submission
+    with open(file_name, "w") as f:
+        for answer in answers:
+            # Ensure that 6 decimals are used
+            f.write("{:.6f}\n".format(answer))
