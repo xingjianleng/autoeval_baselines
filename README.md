@@ -1,47 +1,25 @@
-# Baselines
-This repository includes various baseline techniques for label-free model evaluation task in the VDU2023 competition.
+# DataCV Challenge @ CVPR 2023
 
-## Methods
-The following succinctly outlines the methodology of each method, as detailed in the appendix of "Predicting Out-of-Distribution Error with the Projection Norm" paper [(Yu et al., 2022)](https://arxiv.org/abs/2202.05834).
+Welcome to DataCV Challenge 2023!
 
-### Rotation
-The *Rotation Prediction* (Rotation) [(Deng et al., 2021)](https://arxiv.org/abs/2106.05961) metric is defined as
-```math
-\text{Rotation} = \frac{1}{m}\sum_{j=1}^m\Big\{\frac{1}{4}\sum_{r \in \{0^\circ, 90^\circ, 180^\circ, 270^\circ\}}\mathbf{1}\{C^r(\tilde{x}_j; \hat{\theta}) \neq y_r\}\Big\},
-```
-where $y_r$ is the label for $r \in \lbrace 0^{\circ}, 90^{\circ}, 180^{\circ}, 270^{\circ} \rbrace$, and $C^r(\tilde{x}_j; \hat{\theta})$ predicts the rotation degree of an image $\tilde{x}_j$.
+This is the development kit repository for [the 1st DataCV Challenge](https://sites.google.com/view/vdu-cvpr23/competition?authuser=0). This repository includes details on how to download datasets, run baseline models, and organize your result as answer.zip. Final evaluation can be performed on the [CodeLab evaluation server](https://codalab.lisn.upsaclay.fr/competitions/10221). Please see the [main website](https://codalab.lisn.upsaclay.fr/competitions/10221) for competition details, rules, and dates. 
 
-### ConfScore
-The *Averaged Confidence* (ConfScore) [(Hendrycks & Gimpel, 2016)](https://arxiv.org/abs/1610.02136) is defined as
-$$\text{ConfScore} = \frac{1}{m}\sum_{j=1}^m \max_{k} \text{Softmax}(f(\tilde{x}_j; \hat{\theta}))_k,$$
-where $\text{Softmax}(\cdot)$ is the softmax function.
 
-### Entropy
-The *Entropy* [(Guillory et al., 2021)](https://arxiv.org/abs/2107.03315) metric is defined as
-```math
-\text{Entropy} = \frac{1}{m}\sum_{j=1}^m \text{Ent}(\text{Softmax}(f(\tilde{x}_j; \hat{\theta}))),$$
-where $\text{Ent}(p)=-\sum^K_{k=1}p_k\cdot\log(p_k)$.
-```
+## Overview
+Label-free model evaluation is the competition task.  It is different from standard evaluation that calculates model accuracy based on model outputs and corresponding test labels. Label-free model evaluation (AutoEval), on the other hand, has no access to test labels.  In this competition,  the participant needs to **design a method that can estimate the model accuracies on test sets without ground truths**.   
 
-### ATC
-The *Averaged Threshold Confidence* (ATC) [(Garg et al., 2022)](https://arxiv.org/abs/2201.04234) is defined as
-```math
-\text{ATC} = \frac{1}{m}\sum_{j=1}^m\mathbf{1}\{s(\text{Softmax}(f(\tilde{x}_j; \hat{\theta}))) < t\},$$
-where $s(p)=\sum^K_{j=1}p_k\log(p_k)$, and $t$ is defined as the solution to the following equation,
-$$\frac{1}{m^{\text{val}}} \sum_{\ell=1}^{m^\text{val}}\mathbf{1}\{s(\text{Softmax}(f(x_{\ell}^{\text{val}}; \hat{\theta}))) < t\} = \frac{1}{m^{\text{val}}}\sum_{\ell=1}^{m^\text{val}}\mathbf{1}\{C(x_\ell^{\text{val}}; \hat{\theta}) \neq y_\ell^{\text{val}}\}
-```
-where $(x_\ell^{\text{val}}, y_\ell^{\text{val}}), \ell=1,\dots, m^{\text{val}}$, are in-distribution validation samples.
 
-### FID
-The *Frechet Distance* (FD) between datasets [(Deng et al., 2020)](https://arxiv.org/abs/2007.02915) is defined as
-```math
-\text{FD}(\mathcal{D}_{ori}, \mathcal{D}) = \lvert \lvert \mu_{ori} - \mu \rvert \rvert_2^2 + Tr(\Sigma_{ori} + \Sigma - 2(\Sigma_{ori}\Sigma)^\frac{1}{2}),
-```
-where $\mu\_{ori}$ and $\mu$ are the mean feature vectors of $\mathcal{D}\_{ori}$ and $\mathcal{D}$, respectively. $\Sigma\_{ori}$ and $\Sigma$ are the covariance matrices of $\mathcal{D}\_{ori}$ and $\mathcal{D}$, respectively. They are calculated from the image features in $\mathcal{D}\_{ori}$ and $\mathcal{D}$, which are extracted using the classifier $f\_{\theta}$ trained on $\mathcal{D}\_{ori}$.
+## Table of Contents
 
-The Frechet Distance calculation functions utilized in this analysis were sourced from a [publicly available repository](https://github.com/Simon4Yan/Meta-set).
+- [Challenge Data](#challenge-data)
+- [Classifiers being Evaluated](#classifiers-being-evaluated)
+- [Organize Results for Submission](#organize-results-for-submission)
+- [Several Baselines](#several-baselines)
+	- [Baseline Results](#baseline-results)
+	- [Code-Execution](#code-execution)
+	- [Baseline Describetion](#baseline-describetion)
 
-## Dataset
+## Challenge Data
 The training dataset consists of 1,000 transformed datasets from the original [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) test set, using the transformation strategy proposed by [Deng et al. (2021)](https://arxiv.org/abs/2007.02915). The validation set was composed of [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1), [CIFAR-10.1-C](https://github.com/hendrycks/robustness) (add corruptions [(Hendrycks et al., 2019)](https://arxiv.org/abs/1903.12261) to [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1) dataset), and CIFAR-10-F (real-world images collected from [Flickr](https://www.flickr.com))
 
 The CIFAR-10.1 dataset is a single dataset. In contrast, CIFAR-10.1-C and CIFAR-10-F contain 19 and 20 datasets, respectively. Therefore, the total number of datasets in the validation set is 40.
@@ -54,8 +32,8 @@ Download the validation datasets: [link](https://anu365-my.sharepoint.com/:u:/g/
 
 **NOTE: To access the test datasets and participate in the competition, please fill in the [Datasets Request Form](https://anu365-my.sharepoint.com/:b:/g/personal/u7136359_anu_edu_au/ERz4ANQ1A31PvJKgd3mNxr8B1F4e0zfaZL3P_NLOvKrivg?e=lG7mkL) and send the signed form to [the competition organiser](mailto:datacvchallenge2023@gmail.com;VDU2023@gmail.com). Failing to provide the form will lead to the revocation of the CodaLab account in the competition.**
 
-## Models
-In this competition, the models being evaluated are ResNet-56 and RepVGG-A0. Both implementations can be accessed in the public repository at https://github.com/chenyaofo/pytorch-cifar-models. To utilize the models and load their pretrained weights, use the code provided.
+## Classifiers being Evaluated
+In this competition, the classifiers being evaluated are ResNet-56 and RepVGG-A0. Both implementations can be accessed in the public repository at https://github.com/chenyaofo/pytorch-cifar-models. To utilize the models and load their pretrained weights, use the code provided.
 ```python
 import torch
 
@@ -63,7 +41,7 @@ model = torch.hub.load("chenyaofo/pytorch-cifar-models", "cifar10_resnet56"， p
 model = torch.hub.load("chenyaofo/pytorch-cifar-models", "cifar10_repvgg_a0", pretrained=True)
 ```
 
-## Competition submission demo
+## Organize Results for Submission
 As we use automated evaluation scripts for submissions, the format of submitted files is very important. So, there is a function to store the accuracy predictions into the required format, named `store_ans` in `code/utils.py` and `demo/get_answer_txt.py`.
 
 Read the `demo/get_answer_txt.py` file to comprehend the function usage. Execute the code below to see the results.
@@ -72,12 +50,14 @@ Read the `demo/get_answer_txt.py` file to comprehend the function usage. Execute
 python3 demo/get_answer_txt.py
 ```
 
-## Results
+## Several Baselines
 The necessary Python dependencies are specified in the `requirements.txt` file and the experiments were executed using Python version 3.10.8.
 
 The table presented below displays the results of the foundational measurements using [root-mean-square error](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSE). Accuracies are converted into percentages prior to calculation. The experiment was conducted with a single Geforce RTX 2080 Ti GPU.
 
-### ResNet-56
+
+### Baseline Results
+#### ResNet-56
 
 | Method    | CIFAR-10.1 |  CIFAR-10.1-C | CIFAR-10-F  |  Overall   |
 | --------  | ---- | ---- | ---- | ------ |
@@ -87,7 +67,7 @@ The table presented below displays the results of the foundational measurements 
 | ATC       | 11.428 | 5.964  | 8.960  | 7.766  |
 | FID       | 7.517  | 5.145  | 4.662  | 4.985  |
 
-### RepVGG-A0
+#### RepVGG-A0
 
 | Method    | CIFAR-10.1 |  CIFAR-10.1-C | CIFAR-10-F  |  Overall   |
 | --------  | ---- | ---- | ---- | ------ |
@@ -97,7 +77,7 @@ The table presented below displays the results of the foundational measurements 
 | ATC       | 15.168 | 8.050  | 7.694 | 8.132  |
 | FID       | 10.718 | 6.318  | 5.245 | 5.966  |
 
-## Code execution
+### Code Execution
 To install required `Python` libraries, execute the code below.
 ```bash
 pip3 install -r requirements.txt
@@ -114,3 +94,38 @@ cd code/
 python3 get_accuracy.py
 python3 baselines/BASELINE.py
 ```
+
+###  Baseline Describetion
+The following succinctly outlines the methodology of each method, as detailed in the appendix of "Predicting Out-of-Distribution Error with the Projection Norm" paper [(Yu et al., 2022)](https://arxiv.org/abs/2202.05834).
+
+**Rotation.** The *Rotation Prediction* (Rotation) [(Deng et al., 2021)](https://arxiv.org/abs/2106.05961) metric is defined as
+```math
+\text{Rotation} = \frac{1}{m}\sum_{j=1}^m\Big\{\frac{1}{4}\sum_{r \in \{0^\circ, 90^\circ, 180^\circ, 270^\circ\}}\mathbf{1}\{C^r(\tilde{x}_j; \hat{\theta}) \neq y_r\}\Big\},
+```
+where $y_r$ is the label for $r \in \lbrace 0^{\circ}, 90^{\circ}, 180^{\circ}, 270^{\circ} \rbrace$, and $C^r(\tilde{x}_j; \hat{\theta})$ predicts the rotation degree of an image $\tilde{x}_j$.
+
+**ConfScore.** The *Averaged Confidence* (ConfScore) [(Hendrycks & Gimpel, 2016)](https://arxiv.org/abs/1610.02136) is defined as
+$$\text{ConfScore} = \frac{1}{m}\sum_{j=1}^m \max_{k} \text{Softmax}(f(\tilde{x}_j; \hat{\theta}))_k,$$
+where $\text{Softmax}(\cdot)$ is the softmax function.
+
+**Entropy.** The *Entropy* [(Guillory et al., 2021)](https://arxiv.org/abs/2107.03315) metric is defined as
+```math
+\text{Entropy} = \frac{1}{m}\sum_{j=1}^m \text{Ent}(\text{Softmax}(f(\tilde{x}_j; \hat{\theta}))),$$
+where $\text{Ent}(p)=-\sum^K_{k=1}p_k\cdot\log(p_k)$.
+```
+
+**ATC.** The *Averaged Threshold Confidence* (ATC) [(Garg et al., 2022)](https://arxiv.org/abs/2201.04234) is defined as
+```math
+\text{ATC} = \frac{1}{m}\sum_{j=1}^m\mathbf{1}\{s(\text{Softmax}(f(\tilde{x}_j; \hat{\theta}))) < t\},$$
+where $s(p)=\sum^K_{j=1}p_k\log(p_k)$, and $t$ is defined as the solution to the following equation,
+$$\frac{1}{m^{\text{val}}} \sum_{\ell=1}^{m^\text{val}}\mathbf{1}\{s(\text{Softmax}(f(x_{\ell}^{\text{val}}; \hat{\theta}))) < t\} = \frac{1}{m^{\text{val}}}\sum_{\ell=1}^{m^\text{val}}\mathbf{1}\{C(x_\ell^{\text{val}}; \hat{\theta}) \neq y_\ell^{\text{val}}\}
+```
+where $(x_\ell^{\text{val}}, y_\ell^{\text{val}}), \ell=1,\dots, m^{\text{val}}$, are in-distribution validation samples.
+
+**FID.** The *Frechet Distance* (FD) between datasets [(Deng et al., 2020)](https://arxiv.org/abs/2007.02915) is defined as
+```math
+\text{FD}(\mathcal{D}_{ori}, \mathcal{D}) = \lvert \lvert \mu_{ori} - \mu \rvert \rvert_2^2 + Tr(\Sigma_{ori} + \Sigma - 2(\Sigma_{ori}\Sigma)^\frac{1}{2}),
+```
+where $\mu\_{ori}$ and $\mu$ are the mean feature vectors of $\mathcal{D}\_{ori}$ and $\mathcal{D}$, respectively. $\Sigma\_{ori}$ and $\Sigma$ are the covariance matrices of $\mathcal{D}\_{ori}$ and $\mathcal{D}$, respectively. They are calculated from the image features in $\mathcal{D}\_{ori}$ and $\mathcal{D}$, which are extracted using the classifier $f\_{\theta}$ trained on $\mathcal{D}\_{ori}$.
+
+The Frechet Distance calculation functions utilized in this analysis were sourced from a [publicly available repository](https://github.com/Simon4Yan/Meta-set).
