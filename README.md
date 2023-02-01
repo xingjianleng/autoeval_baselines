@@ -2,12 +2,10 @@
 
 Welcome to DataCV Challenge 2023!
 
-This is the development kit repository for [the 1st DataCV Challenge](https://sites.google.com/view/vdu-cvpr23/competition?authuser=0). This repository includes details on how to download datasets, run baseline models, and organize your result as answer.zip. Final evaluation can be performed on the [CodeLab evaluation server](https://codalab.lisn.upsaclay.fr/competitions/10221). Please see the [main website](https://codalab.lisn.upsaclay.fr/competitions/10221) for competition details, rules, and dates. 
-
+This is the development kit repository for [the 1st DataCV Challenge](https://sites.google.com/view/vdu-cvpr23/competition?authuser=0). This repository includes details on how to download datasets, run baseline models, and organize your result as `answer.zip`. The final evaluation will occur on the [CodeLab evaluation server] (https://codalab.lisn.upsaclay.fr/competitions/10221), where all competition information, rules, and dates can be found.
 
 ## Overview
-Label-free model evaluation is the competition task.  It is different from standard evaluation that calculates model accuracy based on model outputs and corresponding test labels. Label-free model evaluation (AutoEval), on the other hand, has no access to test labels.  In this competition,  the participant needs to **design a method that can estimate the model accuracies on test sets without ground truths**.   
-
+Label-free model evaluation is the competition task. It is different from the standard evaluation that calculates model accuracy based on model outputs and corresponding test labels. Label-free model evaluation (AutoEval), on the other hand, has no access to test labels. In this competition, participants need to **design a method that can estimate the model accuracies on test sets without ground truths**.
 
 ## Table of Contents
 
@@ -17,14 +15,14 @@ Label-free model evaluation is the competition task.  It is different from stand
 - [Several Baselines](#several-baselines)
 	- [Baseline Results](#baseline-results)
 	- [Code-Execution](#code-execution)
-	- [Baseline Describetion](#baseline-describetion)
+	- [Baseline Description](#baseline-description)
 
 ## Challenge Data
 The training dataset consists of 1,000 transformed datasets from the original [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) test set, using the transformation strategy proposed by [Deng et al. (2021)](https://arxiv.org/abs/2007.02915). The validation set was composed of [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1), [CIFAR-10.1-C](https://github.com/hendrycks/robustness) (add corruptions [(Hendrycks et al., 2019)](https://arxiv.org/abs/1903.12261) to [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1) dataset), and CIFAR-10-F (real-world images collected from [Flickr](https://www.flickr.com))
 
 The CIFAR-10.1 dataset is a single dataset. In contrast, CIFAR-10.1-C and CIFAR-10-F contain 19 and 20 datasets, respectively. Therefore, the total number of datasets in the validation set is 40.
 
-The training datasets share a common label file named `labels.npy`, and images files are named `new_data_xxx.npy`, where `xxx` is a number from 000 to 999. For every dataset in the validation set, the image file and their labels are stored as two separate `Numpy` array files named "data.npy" and "labels.npy". The `PyTorch` implementation of the `Dataset` class for loading the data can be found in `utils.py`.
+The training datasets share a common label file named `labels.npy`, and images files are named `new_data_xxx.npy`, where `xxx` is a number from 000 to 999. For every dataset in the validation set, the image file and their labels are stored as two separate `Numpy` array files named "data.npy" and "labels.npy". The PyTorch implementation of the Dataset class for loading the data can be found in `utils.py`.
 
 Download the training datasets: [link](https://anu365-my.sharepoint.com/:u:/g/personal/u7136359_anu_edu_au/Eb9yO_Qg41lOkoRS7P6gmqMBk5Q6A2gCV8YbRbuLpB8NwQ?e=WO3Gqi)
 
@@ -42,19 +40,18 @@ model = torch.hub.load("chenyaofo/pytorch-cifar-models", "cifar10_repvgg_a0", pr
 ```
 
 ## Organize Results for Submission
-As we use automated evaluation scripts for submissions, the format of submitted files is very important. So, there is a function to store the accuracy predictions into the required format, named `store_ans` in `code/utils.py` and `demo/get_answer_txt.py`.
+As we use automated evaluation scripts for submissions, the format of submitted files is very important. So, there is a function to store the accuracy predictions into the required format, named `store_ans` in `code/utils.py` and `results_format/get_answer_txt.py`.
 
-Read the `demo/get_answer_txt.py` file to comprehend the function usage. Execute the code below to see the results.
+Read the `results_format/get_answer_txt.py` file to comprehend the function usage. Execute the code below to see the results.
 
 ```bash
-python3 demo/get_answer_txt.py
+python3 results_format/get_answer_txt.py
 ```
 
 ## Several Baselines
-The necessary Python dependencies are specified in the `requirements.txt` file and the experiments were executed using Python version 3.10.8.
+The necessary dependencies are specified in the `requirements.txt` file and the experiments were conducted using Python version 3.10.8, with a single GeForce RTX 2080 Ti GPU.
 
-The table presented below displays the results of the foundational measurements using [root-mean-square error](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSE). Accuracies are converted into percentages prior to calculation. The experiment was conducted with a single Geforce RTX 2080 Ti GPU.
-
+The table presented below displays the results of the foundational measurements using [root-mean-square error](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSE). Accuracies are converted into percentages prior to calculation.
 
 ### Baseline Results
 #### ResNet-56
@@ -77,8 +74,8 @@ The table presented below displays the results of the foundational measurements 
 | ATC       | 15.168 | 8.050  | 7.694 | 8.132  |
 | FID       | 10.718 | 6.318  | 5.245 | 5.966  |
 
-### Code Execution
-To install required `Python` libraries, execute the code below.
+### Code-Execution
+To install required Python libraries, execute the code below.
 ```bash
 pip3 install -r requirements.txt
 ```
@@ -95,7 +92,7 @@ python3 get_accuracy.py
 python3 baselines/BASELINE.py
 ```
 
-###  Baseline Describetion
+###  Baseline Description
 The following succinctly outlines the methodology of each method, as detailed in the appendix of "Predicting Out-of-Distribution Error with the Projection Norm" paper [(Yu et al., 2022)](https://arxiv.org/abs/2202.05834).
 
 **Rotation.** The *Rotation Prediction* (Rotation) [(Deng et al., 2021)](https://arxiv.org/abs/2106.05961) metric is defined as
