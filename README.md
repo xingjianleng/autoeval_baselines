@@ -125,4 +125,4 @@ where $(x_\ell^{\text{val}}, y_\ell^{\text{val}}), \ell=1,\dots, m^{\text{val}}$
 ```
 where $\mu\_{ori}$ and $\mu$ are the mean feature vectors of $\mathcal{D}\_{ori}$ and $\mathcal{D}$, respectively. $\Sigma\_{ori}$ and $\Sigma$ are the covariance matrices of $\mathcal{D}\_{ori}$ and $\mathcal{D}$, respectively. They are calculated from the image features in $\mathcal{D}\_{ori}$ and $\mathcal{D}$, which are extracted using the classifier $f\_{\theta}$ trained on $\mathcal{D}\_{ori}$.
 
-The Frechet Distance calculation functions utilized in this analysis were sourced from a [publicly available repository](https://github.com/Simon4Yan/Meta-set).
+The Frechet Distance calculation functions utilized in this analysis were sourced from a [publicly available repository](https://github.com/Simon4Yan/Meta-set) by [Weijian Deng](https://github.com/Simon4Yan).
