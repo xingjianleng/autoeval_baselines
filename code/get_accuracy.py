@@ -22,7 +22,7 @@ def calculate_acc(dataloader, model, device):
 
 if __name__ == "__main__":
     # paths
-    dataset_path = "/data/lengx/cifar/"
+    dataset_path = "data/lengx/cifar/"
     train_set = "train_data"
     val_sets = sorted(["cifar10-f-32", "cifar-10.1-c", "cifar-10.1"])
     model_name = sys.argv[1]
@@ -43,17 +43,18 @@ if __name__ == "__main__":
     # need to do accuracy calculation
     if not os.path.exists(temp_file_path) or not os.path.exists(f"{temp_file_path}{train_set}.npy"):
         if not os.path.exists(temp_file_path):
-            os.mkdir(temp_file_path)
+            os.makedirs(temp_file_path)
 
         # training set calculation
         train_path = f"{dataset_path}{train_set}"
         train_candidates = []
+        if not os.path.exists(train_path): os.makedirs(train_path)
         for file in sorted(os.listdir(train_path)):
             if file.endswith(".npy") and file.startswith("new_data"):
                 train_candidates.append(file)
-        
+
         accuracies = np.zeros(len(train_candidates))
-        print(f"===> Calculating accuracy for {train_set}")        
+        print(f"===> Calculating accuracy for {train_set}")
 
         for i, candidate in enumerate(tqdm(train_candidates)):
             data_path = f"{train_path}/{candidate}"
@@ -78,11 +79,12 @@ if __name__ == "__main__":
         val_candidates = []
         val_paths = [f"{dataset_path}{set_name}" for set_name in val_sets]
         for val_path in val_paths:
+            if not os.path.exists(val_path): os.makedirs(val_path)
             for file in sorted(os.listdir(val_path)):
                 val_candidates.append(f"{val_path}/{file}")
-        
+
         accuracies = np.zeros(len(val_candidates))
-        print(f"===> Calculating accuracy for validation sets")        
+        print(f"===> Calculating accuracy for validation sets")
 
         for i, candidate in enumerate(tqdm(val_candidates)):
             data_path = f"{candidate}/data.npy"
