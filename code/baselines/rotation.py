@@ -70,7 +70,7 @@ def rotation_pred(dataloader, model, device):
 
 if __name__ == "__main__":
     # paths
-    dataset_path = "/data/lengx/cifar/"
+    dataset_path = "data/lengx/cifar/"
     train_set = "train_data"
     val_sets = sorted(["cifar10-f-32", "cifar-10.1-c", "cifar-10.1"])
     model_name = sys.argv[1]
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     # need to do rotation accuracy calculation
     if not os.path.exists(temp_file_path) or not os.path.exists(f"{temp_file_path}{train_set}.npy"):
         if not os.path.exists(temp_file_path):
-            os.mkdir(temp_file_path)
+            os.makedirs(temp_file_path)
 
         # training set calculation
         train_path = f"{dataset_path}{train_set}"
@@ -111,9 +111,9 @@ if __name__ == "__main__":
         for file in sorted(os.listdir(train_path)):
             if file.endswith(".npy") and file.startswith("new_data"):
                 train_candidates.append(file)
-        
+
         rotation_acc = np.zeros(len(train_candidates))
-        print(f"===> Calculating rotation accuracy for {train_set}")        
+        print(f"===> Calculating rotation accuracy for {train_set}")
 
         for i, candidate in enumerate(tqdm(train_candidates)):
             data_path = f"{train_path}/{candidate}"
@@ -131,7 +131,7 @@ if __name__ == "__main__":
             rotation_acc[i] = rotation_pred(dataloader, model, device)
 
         np.save(f"{temp_file_path}{train_set}.npy", rotation_acc)
-    
+
     if not os.path.exists(f"{temp_file_path}val_sets.npy"):
         # validation set calculation
         val_candidates = []
@@ -139,9 +139,9 @@ if __name__ == "__main__":
         for val_path in val_paths:
             for file in sorted(os.listdir(val_path)):
                 val_candidates.append(f"{val_path}/{file}")
-        
+
         rotation_acc = np.zeros(len(val_candidates))
-        print(f"===> Calculating rotation accuracy for validation sets")        
+        print(f"===> Calculating rotation accuracy for validation sets")
 
         for i, candidate in enumerate(tqdm(val_candidates)):
             data_path = f"{candidate}/data.npy"
@@ -159,7 +159,7 @@ if __name__ == "__main__":
             rotation_acc[i] = rotation_pred(dataloader, model, device)
 
         np.save(f"{temp_file_path}val_sets.npy", rotation_acc)
-    
+
     # if the calculation of rotation accuracy is finished
     # calculate the linear regression model (accuracy in %)
     print(f"===> Linear Regression model for rotation accuracy method with model: {model_name}")
