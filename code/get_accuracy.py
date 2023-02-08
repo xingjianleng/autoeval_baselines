@@ -1,5 +1,7 @@
+import argparse
 import os
 import sys
+
 sys.path.append(".")
 
 import numpy as np
@@ -7,6 +9,18 @@ import torch
 from tqdm import tqdm
 
 from utils import predict_multiple, CIFAR10NP, TRANSFORM
+
+
+parser = argparse.ArgumentParser(description="AutoEval baselines - get_accuracy")
+parser.add_argument(
+    "--model", required=True, type=str, help="the model used to run this script"
+)
+parser.add_argument(
+    "--dataset_path",
+    required=True,
+    type=str,
+    help="path containing all datasets (training and validation)",
+)
 
 
 def calculate_acc(dataloader, model, device):
@@ -22,33 +36,41 @@ def calculate_acc(dataloader, model, device):
 
 if __name__ == "__main__":
     # paths
-    dataset_path = "data/lengx/cifar/"
+    args = parser.parse_args()
+    dataset_path = args.dataset_path
+    model_name = args.model
     train_set = "train_data"
     val_sets = sorted(["cifar10-f-32", "cifar-10.1-c", "cifar-10.1"])
-    model_name = sys.argv[1]
     temp_file_path = f"../temp/{model_name}/acc/"
 
     batch_size = 500
     device = "cuda" if torch.cuda.is_available() else "cpu"
     # load the model
     if model_name == "resnet":
-        model = torch.hub.load("chenyaofo/pytorch-cifar-models", "cifar10_resnet56", pretrained=True)
+        model = torch.hub.load(
+            "chenyaofo/pytorch-cifar-models", "cifar10_resnet56", pretrained=True
+        )
     elif model_name == "repvgg":
-        model = torch.hub.load("chenyaofo/pytorch-cifar-models", "cifar10_repvgg_a0", pretrained=True)
+        model = torch.hub.load(
+            "chenyaofo/pytorch-cifar-models", "cifar10_repvgg_a0", pretrained=True
+        )
     else:
         raise ValueError("Unexpected model_name")
     model.to(device)
     model.eval()
 
     # need to do accuracy calculation
-    if not os.path.exists(temp_file_path) or not os.path.exists(f"{temp_file_path}{train_set}.npy"):
+    if not os.path.exists(temp_file_path) or not os.path.exists(
+        f"{temp_file_path}{train_set}.npy"
+    ):
         if not os.path.exists(temp_file_path):
             os.makedirs(temp_file_path)
 
         # training set calculation
         train_path = f"{dataset_path}{train_set}"
         train_candidates = []
-        if not os.path.exists(train_path): os.makedirs(train_path)
+        if not os.path.exists(train_path):
+            os.makedirs(train_path)
         for file in sorted(os.listdir(train_path)):
             if file.endswith(".npy") and file.startswith("new_data"):
                 train_candidates.append(file)
@@ -79,7 +101,8 @@ if __name__ == "__main__":
         val_candidates = []
         val_paths = [f"{dataset_path}{set_name}" for set_name in val_sets]
         for val_path in val_paths:
-            if not os.path.exists(val_path): os.makedirs(val_path)
+            if not os.path.exists(val_path):
+                os.makedirs(val_path)
             for file in sorted(os.listdir(val_path)):
                 val_candidates.append(f"{val_path}/{file}")
 

@@ -9,13 +9,18 @@ Label-free model evaluation is the competition task. It is different from the st
 
 ## Table of Contents
 
-- [Challenge Data](#challenge-data)
-- [Classifiers being Evaluated](#classifiers-being-evaluated)
-- [Organize Results for Submission](#organize-results-for-submission)
-- [Several Baselines](#several-baselines)
-	- [Baseline Results](#baseline-results)
-	- [Code-Execution](#code-execution)
-	- [Baseline Description](#baseline-description)
+- [DataCV Challenge @ CVPR 2023](#datacv-challenge--cvpr-2023)
+	- [Overview](#overview)
+	- [Table of Contents](#table-of-contents)
+	- [Challenge Data](#challenge-data)
+	- [Classifiers being Evaluated](#classifiers-being-evaluated)
+	- [Organize Results for Submission](#organize-results-for-submission)
+	- [Several Baselines](#several-baselines)
+		- [Baseline Results](#baseline-results)
+			- [ResNet-56](#resnet-56)
+			- [RepVGG-A0](#repvgg-a0)
+		- [Code-Execution](#code-execution)
+		- [Baseline Description](#baseline-description)
 
 ## Challenge Data
 The training dataset consists of 1,000 transformed datasets from the original [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) test set, using the transformation strategy proposed by [Deng et al. (2021)](https://arxiv.org/abs/2007.02915). The validation set was composed of [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1), [CIFAR-10.1-C](https://github.com/hendrycks/robustness) (add corruptions [(Hendrycks et al., 2019)](https://arxiv.org/abs/1903.12261) to [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1) dataset), and CIFAR-10-F (real-world images collected from [Flickr](https://www.flickr.com))
@@ -82,14 +87,13 @@ pip3 install -r requirements.txt
 The above results can be replicated by executing the code provided below in the terminal.
 ```bash
 cd code/
-python3 get_accuracy.py
 chmod u+x run_baselines.sh && ./run_baselines.sh
 ```
 To run one specific baseline, use the code below.
 ```bash
 cd code/
-python3 get_accuracy.py
-python3 baselines/BASELINE.py
+python3 get_accuracy.py --model MODEL --dataset_path DATASET_PATH
+python3 baselines/BASELINE.py --model MODEL --dataset_path DATASET_PATH
 ```
 
 ###  Baseline Description

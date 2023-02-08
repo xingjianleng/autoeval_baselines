@@ -1,5 +1,7 @@
+import argparse
 import os
 import sys
+
 sys.path.append(".")
 
 import numpy as np
@@ -11,6 +13,18 @@ from tqdm import tqdm
 from models.resnet_rotation import ResNetRotation
 from models.repvgg_rotation import RepVGGRotation
 from utils import CIFAR10NP, TRANSFORM
+
+
+parser = argparse.ArgumentParser(description="AutoEval baselines - Rotation Prediction")
+parser.add_argument(
+    "--model", required=True, type=str, help="the model used to run this script"
+)
+parser.add_argument(
+    "--dataset_path",
+    required=True,
+    type=str,
+    help="path containing all datasets (training and validation)",
+)
 
 
 # Assumes that tensor is (nchannels, height, width)
@@ -40,13 +54,17 @@ def rotate_batch_with_labels(batch, labels):
 
 
 def rotate_batch(batch, label):
-    if label == 'rand':
+    if label == "rand":
         labels = torch.randint(4, (len(batch),), dtype=torch.long)
-    elif label == 'expand':
-        labels = torch.cat([torch.zeros(len(batch), dtype=torch.long),
-                            torch.zeros(len(batch), dtype=torch.long) + 1,
-                            torch.zeros(len(batch), dtype=torch.long) + 2,
-                            torch.zeros(len(batch), dtype=torch.long) + 3])
+    elif label == "expand":
+        labels = torch.cat(
+            [
+                torch.zeros(len(batch), dtype=torch.long),
+                torch.zeros(len(batch), dtype=torch.long) + 1,
+                torch.zeros(len(batch), dtype=torch.long) + 2,
+                torch.zeros(len(batch), dtype=torch.long) + 3,
+            ]
+        )
         batch = batch.repeat((4, 1, 1, 1))
     else:
         assert isinstance(label, int)
@@ -58,7 +76,7 @@ def rotation_pred(dataloader, model, device):
     # return a tuple of (classification accuracy, rotation prediction accuracy)
     correct_rot = []
     for imgs, _ in iter(dataloader):
-        imgs_rot, labels_rot = rotate_batch(imgs, 'expand')
+        imgs_rot, labels_rot = rotate_batch(imgs, "expand")
         imgs_rot, labels_rot = imgs_rot.to(device), labels_rot.to(device)
         with torch.no_grad():
             _, out_rot = model(imgs_rot)
@@ -70,10 +88,11 @@ def rotation_pred(dataloader, model, device):
 
 if __name__ == "__main__":
     # paths
-    dataset_path = "data/lengx/cifar/"
+    args = parser.parse_args()
+    dataset_path = args.dataset_path
+    model_name = args.model
     train_set = "train_data"
     val_sets = sorted(["cifar10-f-32", "cifar-10.1-c", "cifar-10.1"])
-    model_name = sys.argv[1]
     temp_file_path = f"../temp/{model_name}/rotation/"
 
     batch_size = 500
@@ -95,13 +114,15 @@ if __name__ == "__main__":
         raise ValueError("Unexpected model_name")
     # load the rotation FC layer weights
     for key, value in fc_rot_weights.items():
-            model_state[key] = value
+        model_state[key] = value
     model.load_state_dict(model_state)
     model.to(device)
     model.eval()
 
     # need to do rotation accuracy calculation
-    if not os.path.exists(temp_file_path) or not os.path.exists(f"{temp_file_path}{train_set}.npy"):
+    if not os.path.exists(temp_file_path) or not os.path.exists(
+        f"{temp_file_path}{train_set}.npy"
+    ):
         if not os.path.exists(temp_file_path):
             os.makedirs(temp_file_path)
 
@@ -162,7 +183,9 @@ if __name__ == "__main__":
 
     # if the calculation of rotation accuracy is finished
     # calculate the linear regression model (accuracy in %)
-    print(f"===> Linear Regression model for rotation accuracy method with model: {model_name}")
+    print(
+        f"===> Linear Regression model for rotation accuracy method with model: {model_name}"
+    )
     train_x = np.load(f"{temp_file_path}{train_set}.npy") * 100
     train_y = np.load(f"../temp/{model_name}/acc/{train_set}.npy") * 100
     val_x = np.load(f"{temp_file_path}val_sets.npy") * 100
