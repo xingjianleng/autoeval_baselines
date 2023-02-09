@@ -33,6 +33,10 @@ Download the training datasets: [link](https://anu365-my.sharepoint.com/:u:/g/pe
 
 Download the validation datasets: [link](https://anu365-my.sharepoint.com/:u:/g/personal/u7136359_anu_edu_au/Edg83yRxM9BPonPP22suB_IBrHlKYV5bOn4VK-c5RZ8dtQ?e=kExXEm)
 
+Download the training datasets' accuracies on the ResNet-56 model: [link](https://anu365-my.sharepoint.com/:t:/g/personal/u7136359_anu_edu_au/EQ4XcZLeVPNAg45JdB0mZ4ABO6nsIDDD3z2_frx0rnbRpg?e=5wA3Xi)
+
+Download the training datasets' accuracies on the RepVGG-A0 model: [link](https://anu365-my.sharepoint.com/:t:/g/personal/u7136359_anu_edu_au/EWUVPpAqYcNJq8iB4AfYD7oBodhHMI1B_1Mijd7x8V8xlA?e=oPDaL3)
+
 **NOTE: To access the test datasets and participate in the competition, please fill in the [Datasets Request Form](https://anu365-my.sharepoint.com/:b:/g/personal/u7136359_anu_edu_au/ERz4ANQ1A31PvJKgd3mNxr8B1F4e0zfaZL3P_NLOvKrivg?e=lG7mkL) and send the signed form to [the competition organiser](mailto:datacvchallenge2023@gmail.com;VDU2023@gmail.com). Failing to provide the form will lead to the revocation of the CodaLab account in the competition.**
 
 ## Classifiers being Evaluated
