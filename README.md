@@ -92,8 +92,8 @@ chmod u+x run_baselines.sh && ./run_baselines.sh
 To run one specific baseline, use the code below.
 ```bash
 cd code/
-python3 get_accuracy.py --model MODEL --dataset_path DATASET_PATH
-python3 baselines/BASELINE.py --model MODEL --dataset_path DATASET_PATH
+python3 get_accuracy.py --model <resnet/repvgg> --dataset_path DATASET_PATH
+python3 baselines/BASELINE.py --model <resnet/repvgg> --dataset_path DATASET_PATH
 ```
 
 ###  Baseline Description
