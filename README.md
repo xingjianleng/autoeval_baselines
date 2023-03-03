@@ -12,6 +12,7 @@ Label-free model evaluation is the competition task. It is different from the st
 - [DataCV Challenge @ CVPR 2023](#datacv-challenge--cvpr-2023)
 	- [Overview](#overview)
 	- [Table of Contents](#table-of-contents)
+	- [Competition Submission](#competition-submission)
 	- [Challenge Data](#challenge-data)
 	- [Classifiers being Evaluated](#classifiers-being-evaluated)
 	- [Organize Results for Submission](#organize-results-for-submission)
@@ -21,6 +22,33 @@ Label-free model evaluation is the competition task. It is different from the st
 			- [RepVGG-A0](#repvgg-a0)
 		- [Code-Execution](#code-execution)
 		- [Baseline Description](#baseline-description)
+
+## Competition Submission
+In total, the test set comprises 100 datasets. As a result, each model's accuracy should be predicted 100 times. Given that there are two models to be evaluated, the expected number of lines in the "answer.txt" file is 200.
+
+The first 100 lines represent the accuracy predictions of the ResNet model, while the second 100 lines represent those of the RepVGG model. Each of the 100-line predictions is the accuracy prediction for the model on *xxx.npy* dataset, where *xxx* goes from *001* to *100*.
+
+To prepare your submission, you need to write your predicted accuracies into a plain text file named "**answer.txt**", with one prediction (e.g., 0.876543) per line. For example, 
+
+```
+0.100000
+0.100000
+.
+.
+.
+0.100000
+0.100000
+0.100000
+0.100000
+```
+Then, **zip** the text file and it submit to the competition website. 
+
+**How to organize an answer.txt file for validation evaluation?**
+
+Please refer to [Organize Results for Submission](#organize-results-for-submission). 
+
+In the competition, you are only required to submit the zipped prediction results named the "answer.txt". We give an example for this txt file at [answer.txt](https://drive.google.com/file/d/1WJg2_RCJ1liFCAKfSSthOoFsj5TCMZCK/view) demo.
+
 
 ## Challenge Data
 The training dataset consists of 1,000 transformed datasets from the original [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) test set, using the transformation strategy proposed by [Deng et al. (2021)](https://arxiv.org/abs/2007.02915). The validation set was composed of [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1), [CIFAR-10.1-C](https://github.com/hendrycks/robustness) (add corruptions [(Hendrycks et al., 2019)](https://arxiv.org/abs/1903.12261) to [CIFAR-10.1](https://github.com/modestyachts/CIFAR-10.1) dataset), and CIFAR-10-F (real-world images collected from [Flickr](https://www.flickr.com))
