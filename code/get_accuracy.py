@@ -38,8 +38,8 @@ if __name__ == "__main__":
     # paths
     args = parser.parse_args()
     dataset_path = args.dataset_path
-    if not dataset_path or dataset_path[-1] != '/':
-        dataset_path += '/'
+    if not dataset_path or dataset_path[-1] != "/":
+        dataset_path += "/"
 
     model_name = args.model
     train_set = "train_data"
