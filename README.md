@@ -2,7 +2,7 @@
 
 Welcome to DataCV Challenge 2023!
 
-This is the development kit repository for [the 1st DataCV Challenge](https://sites.google.com/view/vdu-cvpr23/competition?authuser=0). This repository includes details on how to download datasets, run baseline models, and organize your result as `answer.zip`. The final evaluation will occur on the [CodeLab evaluation server] (https://codalab.lisn.upsaclay.fr/competitions/10221), where all competition information, rules, and dates can be found.
+This is the development kit repository for [the 1st DataCV Challenge](https://sites.google.com/view/vdu-cvpr23/competition?authuser=0). This repository includes details on how to download datasets, run baseline models, and organize your result as `answer.zip`. The final evaluation will occur on the [CodeLab evaluation server](https://codalab.lisn.upsaclay.fr/competitions/10221), where all competition information, rules, and dates can be found.
 
 ## Overview
 Label-free model evaluation is the competition task. It is different from the standard evaluation that calculates model accuracy based on model outputs and corresponding test labels. Label-free model evaluation (AutoEval), on the other hand, has no access to test labels. In this competition, participants need to **design a method that can estimate the model accuracies on test sets without ground truths**.
